@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔌 API Tester | Connect Endpoint Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .response-area {
+            margin-top: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .response-area h3 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .response-content {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .quick-test {
+            margin-top: 30px;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .quick-test h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .test-btn {
+            background: #f0f0f0;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 8px 20px;
+            width: auto;
+            font-size: 14px;
+        }
+
+        .test-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .info-note {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔌 Connect API Tester</h1>
+            <p>Test your endpoint: <strong>https://kuro.aryanispe.in/connect</strong></p>
+        </div>
+
+        <div class="test-grid">
+            <!-- Manual Test Card -->
+            <div class="card">
+                <h2>📝 Manual Test</h2>
+                <form id="testForm">
+                    <div class="form-group">
+                        <label for="game">Game <span style="color: red;">*</span></label>
+                        <input type="text" id="game" name="game" placeholder="e.g., pubg, freefire, cod" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_key">User Key <span style="color: red;">*</span></label>
+                        <input type="text" id="user_key" name="user_key" placeholder="Your user key" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serial">Serial/Device ID <span style="color: red;">*</span></label>
+                        <input type="text" id="serial" name="serial" placeholder="Device serial number" required>
+                    </div>
+                    <button type="submit" id="submitBtn">🚀 Send POST Request</button>
+                </form>
+                <div id="manualResponse" class="response-area" style="display: none;">
+                    <h3>📡 Response</h3>
+                    <div id="manualResponseContent" class="response-content"></div>
+                </div>
+            </div>
+
+            <!-- API Info Card -->
+            <div class="card">
+                <h2>ℹ️ API Information</h2>
+                <div class="info-note">
+                    <strong>🔗 Endpoint:</strong><br>
+                    <code>https://kuro.aryanispe.in/connect</code>
+                </div>
+                <div class="info-note">
+                    <strong>📌 Method:</strong><br>
+                    <code>POST</code> (GET will show the fun page)
+                </div>
+                <div class="info-note">
+                    <strong>📦 Required Parameters:</strong><br>
+                    <code>game</code> - Game name (alpha_dash)<br>
+                    <code>user_key</code> - User key (1-36 chars)<br>
+                    <code>serial</code> - Device serial (alpha_dash)
+                </div>
+                <div class="info-note">
+                    <strong>✅ Success Response:</strong><br>
+                    <pre style="background: #1e1e1e; color: #d4d4d4; padding: 10px; border-radius: 5px; font-size: 11px; margin-top: 5px;">{
+  "status": true,
+  "data": {
+    "real": "...",
+    "token": "...",
+    "modname": "...",
+    "expired_date": "...",
+    ...
+  }
+}</pre>
+                </div>
+                <div class="info-note">
+                    <strong>❌ Error Responses:</strong><br>
+                    - <code>Bad Parameter</code> - Invalid input<br>
+                    - <code>USER OR GAME NOT REGISTERED</code><br>
+                    - <code>USER BLOCKED</code><br>
+                    - <code>EXPIRED KEY</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Test Section -->
+        <div class="quick-test">
+            <h2>⚡ Quick Test Scenarios</h2>
+            <div class="test-buttons">
+                <button class="test-btn" onclick="quickTest('pubg', 'test123', 'device001')">🎮 PUBG Test</button>
+                <button class="test-btn" onclick="quickTest('freefire', 'test456', 'device002')">🔥 FreeFire Test</button>
+                <button class="test-btn" onclick="quickTest('cod', 'test789', 'device003')">💀 COD Test</button>
+                <button class="test-btn" onclick="quickTest('', '', '')">⚠️ Empty Params Test</button>
+            </div>
+            <div id="quickResponse" class="response-area" style="display: none; margin-top: 20px;">
+                <h3>📡 Quick Test Response</h3>
+                <div id="quickResponseContent" class="response-content"></div>
+            </div>
+        </div>
+
+        <!-- Live Status Check -->
+        <div class="quick-test" style="margin-top: 20px;">
+            <h2>🔍 Live Endpoint Check</h2>
+            <button onclick="checkEndpoint()" style="background: #28a745; margin-bottom: 15px;">🌐 Check Endpoint Status</button>
+            <div id="statusResponse" class="response-area" style="display: none;">
+                <h3>📡 Status Check</h3>
+                <div id="statusResponseContent" class="response-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://kuro.aryanispe.in/connect';
+
+        async function sendRequest(game, user_key, serial, responseElement, contentElement, loadingElement = null) {
+            if (!game || !user_key || !serial) {
+                showResponse(responseElement, contentElement, {
+                    status: false,
+                    reason: 'Missing required parameters: game, user_key, and serial are required'
+                }, false);
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('game', game);
+            formData.append('user_key', user_key);
+            formData.append('serial', serial);
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                showResponse(responseElement, contentElement, data, response.ok);
+            } catch (error) {
+                showResponse(responseElement, contentElement, {
+                    status: false,
+                    reason: 'Network Error: ' + error.message,
+                    details: 'Could not connect to the API endpoint'
+                }, false);
+            }
+        }
+
+        function showResponse(responseArea, contentElement, data, isSuccess) {
+            responseArea.style.display = 'block';
+            
+            const statusClass = isSuccess && data.status ? 'status-success' : 'status-error';
+            const statusText = isSuccess && data.status ? '✅ SUCCESS' : '❌ ERROR';
+            
+            let formattedJson = JSON.stringify(data, null, 2);
+            // Add syntax highlighting
+            formattedJson = formattedJson.replace(/"([^"]+)":/g, '<span style="color: #9cdcfe;">"$1"</span>:');
+            formattedJson = formattedJson.replace(/: "([^"]+)"/g, ': <span style="color: #ce9178;">"$1"</span>');
+            formattedJson = formattedJson.replace(/: (\d+)/g, ': <span style="color: #b5cea8;">$1</span>');
+            formattedJson = formattedJson.replace(/: (true|false)/g, ': <span style="color: #4ec9b0;">$1</span>');
+            
+            contentElement.innerHTML = `
+                <div class="${statusClass} status-badge">${statusText}</div>
+                <div style="margin-top: 10px;">${formattedJson}</div>
+            `;
+        }
+
+        // Manual form submission
+        document.getElementById('testForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const game = document.getElementById('game').value.trim();
+            const user_key = document.getElementById('user_key').value.trim();
+            const serial = document.getElementById('serial').value.trim();
+            
+            const responseArea = document.getElementById('manualResponse');
+            const contentElement = document.getElementById('manualResponseContent');
+            
+            await sendRequest(game, user_key, serial, responseArea, contentElement);
+        });
+
+        // Quick test function
+        window.quickTest = async (game, user_key, serial) => {
+            const responseArea = document.getElementById('quickResponse');
+            const contentElement = document.getElementById('quickResponseContent');
+            
+            // Fill manual form for reference
+            document.getElementById('game').value = game;
+            document.getElementById('user_key').value = user_key;
+            document.getElementById('serial').value = serial;
+            
+            await sendRequest(game, user_key, serial, responseArea, contentElement);
+            
+            // Scroll to quick response
+            responseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        };
+
+        // Check endpoint status (GET request)
+        window.checkEndpoint = async () => {
+            const responseArea = document.getElementById('statusResponse');
+            const contentElement = document.getElementById('statusResponseContent');
+            
+            responseArea.style.display = 'block';
+            contentElement.innerHTML = '<div class="status-loading status-badge">⏳ Checking endpoint...</div>';
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/html'
+                    }
+                });
+                
+                const statusCode = response.status;
+                const statusText = response.statusText;
+                const contentType = response.headers.get('content-type');
+                
+                let preview = '';
+                if (contentType && contentType.includes('text/html')) {
+                    const html = await response.text();
+                    // Extract title or first few lines
+                    const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+                    preview = titleMatch ? titleMatch[1] : 'HTML page loaded successfully';
+                    preview = preview.substring(0, 100);
+                } else {
+                    preview = await response.text();
+                    preview = preview.substring(0, 200);
+                }
+                
+                contentElement.innerHTML = `
+                    <div class="${response.ok ? 'status-success' : 'status-error'} status-badge">
+                        ${response.ok ? '✅ ENDPOINT ACTIVE' : '⚠️ ENDPOINT RESPONDING WITH ERROR'}
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <strong>Status:</strong> ${statusCode} ${statusText}<br>
+                        <strong>Content Type:</strong> ${contentType || 'N/A'}<br>
+                        <strong>Preview:</strong><br>
+                        <pre style="background: #2d2d2d; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 11px; white-space: pre-wrap;">${escapeHtml(preview)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                contentElement.innerHTML = `
+                    <div class="status-error status-badge">❌ CONNECTION FAILED</div>
+                    <div style="margin-top: 10px;">
+                        Error: ${escapeHtml(error.message)}<br>
+                        <strong>Possible issues:</strong><br>
+                        - CORS policy (check browser console)<br>
+                        - Network connectivity<br>
+                        - Endpoint unavailable
+                    </div>
+                `;
+            }
+        };
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Auto-check endpoint on page load
+        setTimeout(checkEndpoint, 500);
+    </script>
+</body>
+</html>

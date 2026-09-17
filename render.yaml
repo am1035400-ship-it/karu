@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: kuro-panel
+    env: docker
+    plan: free
+    region: singapore # or frankfurt, oregon, etc.
+    envVars:
+      - key: DB_HOST
+        value: "your_mysql_host"
+      - key: DB_USER
+        value: "your_mysql_user"
+      - key: DB_PASS
+        value: "your_mysql_password"
+      - key: DB_NAME
+        value: "your_mysql_database"
+      - key: FAMGATEWAY_API_KEY
+        value: "your_famgateway_api_key_here"
+      - key: CI_ENVIRONMENT
+        value: "production"
+      - key: app.baseURL
+        value: "https://kuro-panel.onrender.com/" # Replace with your actual Render URL
