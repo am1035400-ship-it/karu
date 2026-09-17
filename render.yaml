@@ -14,7 +14,7 @@ services:
       - key: DB_NAME
         value: "your_mysql_database"
       - key: FAMGATEWAY_API_KEY
-        value: "your_famgateway_api_key_here"
+        value: "famihdusdwgeyebhewyued7"
       - key: CI_ENVIRONMENT
         value: "production"
       - key: app.baseURL
