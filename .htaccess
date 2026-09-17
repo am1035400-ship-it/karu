@@ -6,9 +6,7 @@ Options -Indexes
     Options +FollowSymlinks
     RewriteEngine On
 
-    # Force HTTPS redirect
-    RewriteCond %{HTTPS} off
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 
     # Redirect www to non-www
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
